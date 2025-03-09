@@ -3,6 +3,7 @@ using UnityEngine;
 public class MapCreator : MonoBehaviour
 {
     [SerializeField] Map map;
+    [SerializeField] Transform bg;
     [SerializeField] GameObject gridPiece, wallPiece;
     [SerializeField] Transform gridParent;
     [SerializeField] Vector3 center = new Vector3(0, 0, 0);
@@ -14,6 +15,7 @@ public class MapCreator : MonoBehaviour
         DestroyMap();
         CreateMap();
         AdjustCamera();
+        AdjustBG();
     }
 
     public void DestroyMap()
@@ -36,7 +38,7 @@ public class MapCreator : MonoBehaviour
         }
     }
     void Piece(MapWrapper item)
-    { 
+    {
         Vector3 position = new Vector3(item.x * distanceBetweenGridPieces, item.y * distanceBetweenGridPieces, 0);
         if (!item.value == false)
         {
@@ -59,6 +61,14 @@ public class MapCreator : MonoBehaviour
             float horizontalRatio = width / Camera.main.aspect;
             float verticalRatio = height;
             Camera.main.orthographicSize = Mathf.Max(horizontalRatio, verticalRatio) * 0.5f;
+        }
+    }
+    void AdjustBG()
+    {
+        if (bg != null)
+        {
+            bg.position = center + Vector3.forward;
+            bg.localScale = new Vector3(map.width * distanceBetweenGridPieces * 1.05f, map.height * distanceBetweenGridPieces * 1.05f, 1);
         }
     }
 }
