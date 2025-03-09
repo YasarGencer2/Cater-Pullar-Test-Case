@@ -13,21 +13,46 @@ public class MapController : MonoBehaviour
     {
         this.map = map;
     }
-    public List<MapPiece> FindMoveables(MapPiece piece)
+    public List<MapPiece> FindMoveables(MapPiece piece, CharacterType type)
     {
         var index = map.mapList.FindIndex(p => p == piece);
         List<MapPiece> pieces = new();
 
-        if (piece.x != 0 && map.mapList[index - 1].value != ItemType.W)
-            pieces.Add(map.mapList[index - 1]);
-        if (piece.x != map.width - 1 && map.mapList[index + 1].value != ItemType.W)
-            pieces.Add(map.mapList[index + 1]);
-        if (piece.y != 0 && map.mapList[index - map.width].value != ItemType.W)
-            pieces.Add(map.mapList[index - map.width]);
-        if (piece.y != map.height - 1 && map.mapList[index + map.width].value != ItemType.W)
-            pieces.Add(map.mapList[index + map.width]);
+        if (piece.x != 0)
+        {
+            var targetPiece = map.mapList[index - 1];
+            if (CheckPiece(targetPiece, type)) pieces.Add(targetPiece);
+        }
+        if (piece.x != map.width - 1)
+        {
+            var targetPiece = map.mapList[index + 1];
+            if (CheckPiece(targetPiece, type)) pieces.Add(targetPiece);
+        }
+        if (piece.y != 0)
+        {
+            var targetPiece = map.mapList[index - map.width];
+            if (CheckPiece(targetPiece, type)) pieces.Add(targetPiece);
+        }
+        if (piece.y != map.height - 1)
+        {
+            var targetPiece = map.mapList[index + map.width];
+            if (CheckPiece(targetPiece, type)) pieces.Add(targetPiece);
+        }
 
         return pieces;
     }
-
+    bool CheckPiece(MapPiece piece, CharacterType type)
+    {
+        if (piece.value == ItemType.W)
+            return false;
+        if (piece.value == ItemType.YP && type != CharacterType.Yellow)
+            return false;
+        if (piece.value == ItemType.OP && type != CharacterType.Orange)
+            return false;
+        if (piece.value == ItemType.BP && type != CharacterType.Blue)
+            return false;
+        if (piece.value == ItemType.PP && type != CharacterType.Pink)
+            return false;
+        return true;
+    }
 }

@@ -1,9 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DG.Tweening;
 using UnityEngine;
 
 public class Moveable : MonoBehaviour
 {
+    public Portal Portal;
     public CharacterType CharacterType;
     public Moveable head;
     public List<Moveable> bodies = new();
@@ -15,6 +18,7 @@ public class Moveable : MonoBehaviour
     public bool canMoveBackwards, movingBackwards = false;
     public MapPiece backPiece;
     public Vector3 backPiecePos;
+    bool held = false;
 
     public List<MapPiece> path = new();
 
@@ -30,10 +34,20 @@ public class Moveable : MonoBehaviour
     {
         this.piece = piece;
         piecePos = MapCreator.Instance.PieceToPositionCharacters(piece);
+        if (Portal)
+            if (piece == Portal.piece)
+                Done();
     }
-    public void Pick() => UpdateMoveablePlaces();
+    public void Pick()
+    {
+
+        held = true;
+        UpdateMoveablePlaces();
+    }
     public void Hold(Vector3 position)
     {
+        if (held == false)
+            return;
         position.x = Mathf.Clamp(position.x, piecePos.x + clampLeft, piecePos.x + clampRight);
         position.y = Mathf.Clamp(position.y, piecePos.y + clampDown, piecePos.y + clampUp);
         head.transform.position = position;
@@ -52,6 +66,7 @@ public class Moveable : MonoBehaviour
     }
     public void Release()
     {
+        held = false;
         head.transform.position = piecePos;
         bodies[0].Move(this, this, 0);
         path = new();
@@ -143,8 +158,8 @@ public class Moveable : MonoBehaviour
     bool UpdateMoveablePlaces()
     {
         canMoveBackwards = tail.CheckOtherEnd();
-        moveables = MapController.Instance.FindMoveables(piece);
 
+        moveables = MapController.Instance.FindMoveables(piece, CharacterType);
         var neck = bodies[0].piece;
         if (canMoveBackwards == false)
             moveables.Remove(neck);
@@ -176,7 +191,7 @@ public class Moveable : MonoBehaviour
             backPiecePos = MapCreator.Instance.PieceToPositionCharacters(backPiece);
             return true;
         }
-        moveables = MapController.Instance.FindMoveables(piece);
+        moveables = MapController.Instance.FindMoveables(piece, CharacterType);
         var neck = bodies[0].piece;
         moveables.Remove(neck);
         if (moveables.Count == 1)
@@ -206,6 +221,20 @@ public class Moveable : MonoBehaviour
             backPiece = null;
             backPiecePos = Vector3.zero;
             return false;
+        }
+    }
+    void Done()
+    {
+        gameObject.tag = "Dead";
+        tail.gameObject.tag = "Dead";
+        Release();
+        tail.Release();
+
+        transform.DOScale(0, 0.21f).OnComplete(() => gameObject.SetActive(false));
+        tail.transform.DOScale(0, 0.2f).OnComplete(() => tail.gameObject.SetActive(false));
+        foreach (var item in bodies)
+        {
+            item.transform.DOScale(0, 0.2f).OnComplete(() => item.gameObject.SetActive(false));
         }
     }
 

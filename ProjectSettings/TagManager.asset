@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Head
   - Tail
+  - Dead
   layers:
   - Default
   - TransparentFX

@@ -55,10 +55,10 @@ public class MapCreator : MonoBehaviour
             var obj = Instantiate(mapItem.grid, PieceToPosition(piece), Quaternion.identity, gridParent);
             obj.name = "Grid Piece (" + piece.x + ", " + piece.y + ")";
 
-            if (piece.value == ItemType.YP) Portal(piece, mapItem.yellow);
-            else if (piece.value == ItemType.BP) Portal(piece, mapItem.blue);
-            else if (piece.value == ItemType.OP) Portal(piece, mapItem.orange);
-            else if (piece.value == ItemType.PP) Portal(piece, mapItem.pink);
+            if (piece.value == ItemType.YP) Portal(piece, CharacterType.Yellow, mapItem.yellow);
+            else if (piece.value == ItemType.BP) Portal(piece, CharacterType.Blue, mapItem.blue);
+            else if (piece.value == ItemType.OP) Portal(piece, CharacterType.Orange, mapItem.orange);
+            else if (piece.value == ItemType.PP) Portal(piece, CharacterType.Pink, mapItem.pink);
 
             else if (piece.value == ItemType.YH) Head(piece, ItemType.Y, mapItem.yellow);
             else if (piece.value == ItemType.BH) Head(piece, ItemType.B, mapItem.blue);
@@ -66,21 +66,24 @@ public class MapCreator : MonoBehaviour
             else if (piece.value == ItemType.PH) Head(piece, ItemType.P, mapItem.pink);
         }
     }
-    void Portal(MapPiece piece, Material mat)
+    void Portal(MapPiece piece, CharacterType type, Material mat)
     {
-        var obj2 = Instantiate(mapItem.portal, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
-        obj2.GetComponent<Renderer>().material = mat;
+        var obj = Instantiate(mapItem.portal, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
+        var portal = obj.GetComponent<Portal>();
+        portal.piece = piece;
+        portal.type = type;
+        portal.SetMaterial(mat);
     }
     void Head(MapPiece piece, ItemType type, Material mat)
     {
-        var obj2 = Instantiate(mapItem.head, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
-        obj2.GetComponent<Renderer>().material = mat;
+        var obk = Instantiate(mapItem.head, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
+        obk.GetComponent<Renderer>().material = mat;
 
         var charType = CharacterType.Yellow;
         if (type == ItemType.B) charType = CharacterType.Blue;
         else if (type == ItemType.O) charType = CharacterType.Orange;
         else if (type == ItemType.P) charType = CharacterType.Pink;
-        var character = obj2.GetComponent<Head>();
+        var character = obk.GetComponent<Head>();
         character.CharacterType = charType;
 
         character.SetPiece(piece);
@@ -109,11 +112,11 @@ public class MapCreator : MonoBehaviour
                 var name = type + " Body (" + newX + ", " + newY + ")";
                 if (bodies.Contains(name)) continue;
 
-                var obj2 = Instantiate(mapItem.body, PieceToPositionCharacters(nextPiece), Quaternion.identity, characterParent);
-                obj2.name = name;
-                obj2.GetComponent<Renderer>().material = mat;
+                var obj = Instantiate(mapItem.body, PieceToPositionCharacters(nextPiece), Quaternion.identity, characterParent);
+                obj.name = name;
+                obj.GetComponent<Renderer>().material = mat;
 
-                var body = obj2.GetComponent<Body>();
+                var body = obj.GetComponent<Body>();
                 body.CharacterType = charType;
                 CharacterList.Instance.AddBody(body);
                 bodies.Add(name);
@@ -146,5 +149,9 @@ public class MapCreator : MonoBehaviour
     public Vector3 PieceToPositionCharacters(MapPiece piece)
     {
         return PieceToPosition(piece) + Vector3.forward * -5f;
+    }
+    public Vector3 PieceToPositionPortals(MapPiece piece)
+    {
+        return PieceToPosition(piece) + Vector3.forward * -2.5f;
     }
 }

@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using System; 
 using System.Linq;
 using UnityEngine;
 
@@ -29,6 +28,7 @@ public class Head : Moveable
         this.tail.SetTail(this);
         this.tail.CharacterType = CharacterType;
         this.tail.SetPiece(lastBody.piece);
+        this.tail.Portal = Portal;
 
         SetTail(this.tail);
 

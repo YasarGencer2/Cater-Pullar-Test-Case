@@ -14,7 +14,7 @@ public class CharacterList : MonoBehaviour
         Instance = this;
     }
     public void AddCharacter(Head character)
-    { 
+    {
         heads.Add(character);
         TryMatch();
     }
@@ -46,7 +46,18 @@ public class CharacterList : MonoBehaviour
             if (item.CharacterType == type)
             {
                 item.AddTail(mapItem.tail);
-            } 
+            }
+        }
+    }
+    public void SetTarget(Portal portal, CharacterType type, MapPiece piece)
+    {
+        foreach (var item in heads)
+        {
+            if (item.CharacterType == type)
+            {
+                item.Portal = portal;
+                item.tail.Portal = portal;
+            }
         }
     }
 }
