@@ -16,6 +16,7 @@ public class MapEditor : Editor
     {
         EditorGUI.BeginChangeCheck();
  
+        map.timeLimit = EditorGUILayout.FloatField("Time Limit", map.timeLimit); 
         map.width = EditorGUILayout.IntField("Width", map.width);
         map.height = EditorGUILayout.IntField("Height", map.height);
  

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewMap", menuName = "Map/Grid")]
 public class Map : ScriptableObject
 {
+    public float timeLimit = 120;
     public int width = 10;
     public int height = 10;
     public List<MapPiece> mapList = new List<MapPiece>();

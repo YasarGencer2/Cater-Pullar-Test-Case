@@ -10,6 +10,9 @@ public class Portal : MonoBehaviour
     public MapPiece piece;
     public void Start()
     {
+        transform.localScale = Vector3.zero;
+        transform.DOScale(1, 0.4f).SetDelay(.5f);
+        LevelController.AddActivePortal();
         Invoke("SetAsTarget", 1f);
     }
     void SetAsTarget()

@@ -1,12 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class MapCreator : MonoBehaviour
 {
     public static MapCreator Instance { get; private set; }
 
-    [SerializeField] Map map;
+    public Map map;
     [SerializeField] MapItem mapItem;
     [SerializeField] Transform gridParent, characterParent;
     [SerializeField] Vector3 center = new Vector3(0, 0, 0);
@@ -17,12 +19,6 @@ public class MapCreator : MonoBehaviour
     {
         Instance = this;
     }
-    void OnEnable()
-    {
-        DestroyMap();
-        CreateMap();
-        AdjustCamera();
-    }
 
     public void DestroyMap()
     {
@@ -32,15 +28,26 @@ public class MapCreator : MonoBehaviour
         }
     }
 
-    public void CreateMap()
+    public void CreateMap(Map map)
     {
+        this.map = map;
+        DestroyMap();
+        AdjustCamera();
+
         gridCenter = new Vector3((map.width - 1) * 0.5f * distanceBetweenGridPieces,
                                           (map.height - 1) * 0.5f * distanceBetweenGridPieces,
                                           0);
 
-        foreach (var item in map.mapList)
-            Piece(item);
-        MapController.Instance.SetMap(map);
+        StartCoroutine(LocalDelay());
+        IEnumerator LocalDelay()
+        {
+            foreach (var item in map.mapList)
+            {
+                Piece(item);
+                yield return new WaitForSeconds(0.02f);
+            }
+            MapController.Instance.SetMap(map);
+        }
     }
     void Piece(MapPiece piece)
     {
@@ -48,11 +55,15 @@ public class MapCreator : MonoBehaviour
         if (piece.value == ItemType.W)  // Check if the value is Wall
         {
             var obj = Instantiate(mapItem.wall, PieceToPosition(piece), Quaternion.identity, gridParent);
+            obj.transform.localScale = Vector3.zero;
+            obj.transform.DOScale(0.8f, 0.2f);
             obj.name = "Wall Piece (" + piece.x + ", " + piece.y + ")";
         }
         else
         {
             var obj = Instantiate(mapItem.grid, PieceToPosition(piece), Quaternion.identity, gridParent);
+            obj.transform.localScale = Vector3.zero;
+            obj.transform.DOScale(1, 0.2f);
             obj.name = "Grid Piece (" + piece.x + ", " + piece.y + ")";
 
             if (piece.value == ItemType.YP) Portal(piece, CharacterType.Yellow, mapItem.yellow);

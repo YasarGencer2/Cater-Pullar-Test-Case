@@ -1,5 +1,6 @@
-using System; 
+using System;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public class Head : Moveable
@@ -7,6 +8,8 @@ public class Head : Moveable
     void Start()
     {
         SetHead(this);
+        transform.localScale = Vector3.zero;
+        transform.DOScale(0.8f, 0.4f).SetDelay(.5f);
     }
     public void AddBody(Body body)
     {

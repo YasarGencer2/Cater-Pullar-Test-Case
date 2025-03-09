@@ -27,6 +27,7 @@ public class Moveable : MonoBehaviour
     float clampLeft = 0.5f;
     float clampUp = 0.5f;
     float clampDown = 0.5f;
+
     public void SetHead(Moveable head) => this.head = head;
     public void SetBodies(List<Moveable> bodies) => this.bodies = bodies;
     public void SetTail(Moveable tail) => this.tail = tail;
@@ -225,6 +226,7 @@ public class Moveable : MonoBehaviour
     }
     void Done()
     {
+        LevelController.RemovePortal();
         gameObject.tag = "Dead";
         tail.gameObject.tag = "Dead";
         Release();
