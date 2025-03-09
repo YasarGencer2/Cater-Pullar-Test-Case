@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : MonoBehaviour
+public class Body : Moveable
 {
-    public CharacterType CharacterType;
+    void OnDestroy()
+    {
+        Debug.Log("destroyed");
+    }
 }

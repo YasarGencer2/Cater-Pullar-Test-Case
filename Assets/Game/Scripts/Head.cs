@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Head : Moveable
-{ 
+{
     void Start()
     {
         SetHead(this);
@@ -16,20 +16,22 @@ public class Head : Moveable
     public void AddTail(GameObject tail)
     {
         var lastBody = bodies[bodies.Count - 1];
+        bodies.RemoveAt(bodies.Count - 1);
 
-        var obj = Instantiate(tail, lastBody.transform.position, Quaternion.identity, transform);
+        var obj = Instantiate(tail, lastBody.transform.position, Quaternion.identity, lastBody.transform.parent);
         obj.GetComponent<Renderer>().material = lastBody.GetComponent<Renderer>().material;
         this.tail = obj.GetComponent<Tail>();
 
-        Destroy(lastBody.gameObject);
-        bodies.RemoveAt(bodies.Count - 1);
 
         this.tail.SetHead(this);
         this.tail.SetBodies(bodies);
         this.tail.SetTail(this.tail);
         this.tail.CharacterType = CharacterType;
+        this.tail.SetPiece(lastBody.piece);
 
         SetTail(this.tail);
+
+        Destroy(lastBody.gameObject);
     }
 
 }

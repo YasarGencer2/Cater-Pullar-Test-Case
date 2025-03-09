@@ -12,24 +12,50 @@ public class InteractionManager : MonoBehaviour
             if (Physics.Raycast(ray, out var hit))
             {
                 var go = hit.collider.gameObject;
-                if (go.CompareTag("Head"))
+                if (go.tag == "Head")
                 {
                     activeCharacter = go.GetComponent<Head>();
                     activeCharacter.Pick();
-                    activeTail.Release();
+                    ReleaseTail();
                 }
-                else if (go.CompareTag("Tail"))
+                else if (go.tag == "Tail")
                 {
                     activeTail = go.GetComponent<Tail>();
                     activeTail.Pick();
-                    activeCharacter.Release();
+                    ReleaseCharacter();
+                }
+                else
+                {
+                    Debug.Log("Tag: " + go.tag, go);
                 }
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            activeCharacter.Release();
-            activeTail.Release();
+            ReleaseCharacter();
+            ReleaseTail();
         }
+        else if (Input.GetMouseButton(0))
+        {
+            var mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            mousePosition.z = -5;
+            if (activeCharacter)
+                activeCharacter.Hold(mousePosition);
+            else if (activeTail)
+                activeTail.Hold(mousePosition);
+        }
+    }
+    void ReleaseTail()
+    {
+        if (activeTail)
+            activeTail.Release();
+        activeTail = null;
+    }
+    void ReleaseCharacter()
+    {
+        if (activeCharacter)
+            activeCharacter.Release();
+        activeCharacter = null;
     }
 }
