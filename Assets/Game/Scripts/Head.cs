@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Head : Moveable
@@ -23,9 +24,9 @@ public class Head : Moveable
         this.tail = obj.GetComponent<Tail>();
 
 
-        this.tail.SetHead(this);
-        this.tail.SetBodies(bodies);
-        this.tail.SetTail(this.tail);
+        this.tail.SetHead(this.tail);
+        this.tail.SetBodies(bodies.AsEnumerable().Reverse().ToList());
+        this.tail.SetTail(this);
         this.tail.CharacterType = CharacterType;
         this.tail.SetPiece(lastBody.piece);
 
