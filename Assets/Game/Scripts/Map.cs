@@ -7,7 +7,7 @@ public class Map : ScriptableObject
 {
     public int width = 10;
     public int height = 10;
-    public List<MapWrapper> mapList = new List<MapWrapper>();
+    public List<MapPiece> mapList = new List<MapPiece>();
 
     public void FitMaplist()
     {
@@ -23,7 +23,7 @@ public class Map : ScriptableObject
 }
 
 [System.Serializable]
-public class MapWrapper
+public class MapPiece
 {
     public int x;
     public int y;

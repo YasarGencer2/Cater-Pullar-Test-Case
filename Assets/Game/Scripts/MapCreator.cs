@@ -42,7 +42,7 @@ public class MapCreator : MonoBehaviour
             Piece(item);
         MapController.Instance.SetMap(map);
     }
-    void Piece(MapWrapper piece)
+    void Piece(MapPiece piece)
     {
 
         if (piece.value == ItemType.W)  // Check if the value is Wall
@@ -66,12 +66,12 @@ public class MapCreator : MonoBehaviour
             else if (piece.value == ItemType.PH) Head(piece, ItemType.P, mapItem.pink);
         }
     }
-    void Portal(MapWrapper piece, Material mat)
+    void Portal(MapPiece piece, Material mat)
     {
         var obj2 = Instantiate(mapItem.portal, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
         obj2.GetComponent<Renderer>().material = mat;
     }
-    void Head(MapWrapper piece, ItemType type, Material mat)
+    void Head(MapPiece piece, ItemType type, Material mat)
     {
         var obj2 = Instantiate(mapItem.head, PieceToPositionCharacters(piece), Quaternion.identity, characterParent);
         obj2.GetComponent<Renderer>().material = mat;
@@ -91,7 +91,7 @@ public class MapCreator : MonoBehaviour
         CharacterList.Instance.SetTail(charType);
     }
 
-    private void FindBodies(List<string> bodies, CharacterType charType, ItemType type, MapWrapper piece, Material mat)
+    private void FindBodies(List<string> bodies, CharacterType charType, ItemType type, MapPiece piece, Material mat)
     {
         int[] directionsX = { -1, 1, 0, 0 };
         int[] directionsY = { 0, 0, 1, -1 };
@@ -137,13 +137,13 @@ public class MapCreator : MonoBehaviour
             Camera.main.orthographicSize = Mathf.Max(horizontalRatio, verticalRatio) * 0.5f;
         }
     }
-    public Vector3 PieceToPosition(MapWrapper piece)
+    public Vector3 PieceToPosition(MapPiece piece)
     {
         Vector3 position = new Vector3(piece.x * distanceBetweenGridPieces, piece.y * distanceBetweenGridPieces, 0);
         position = position - gridCenter + center;
         return position;
     }
-    public Vector3 PieceToPositionCharacters(MapWrapper piece)
+    public Vector3 PieceToPositionCharacters(MapPiece piece)
     {
         return PieceToPosition(piece) + Vector3.forward * -5f;
     }

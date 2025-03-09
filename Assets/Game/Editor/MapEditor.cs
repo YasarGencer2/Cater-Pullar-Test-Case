@@ -59,14 +59,14 @@ public class MapEditor : Editor
 
     private void UpdateMapList(int x, int y, ItemType value)
     { 
-        MapWrapper wrapper = map.mapList.Find(item => item.x == x && item.y == y);
+        MapPiece wrapper = map.mapList.Find(item => item.x == x && item.y == y);
         if (wrapper != null)
         {
             wrapper.value = value;
         }
         else
         { 
-            map.mapList.Add(new MapWrapper { x = x, y = y, value = value });
+            map.mapList.Add(new MapPiece { x = x, y = y, value = value });
         }
     }
 
@@ -78,7 +78,7 @@ public class MapEditor : Editor
         {
             for (int x = 0; x < map.width; x++)
             {
-                map.mapList.Add(new MapWrapper { x = x, y = y, value = grid[x, y] });
+                map.mapList.Add(new MapPiece { x = x, y = y, value = grid[x, y] });
             }
         }
     }

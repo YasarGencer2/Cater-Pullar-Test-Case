@@ -13,10 +13,10 @@ public class MapController : MonoBehaviour
     {
         this.map = map;
     }
-    public List<MapWrapper> FindMoveables(MapWrapper piece)
+    public List<MapPiece> FindMoveables(MapPiece piece)
     {
         var index = map.mapList.FindIndex(p => p == piece);
-        List<MapWrapper> pieces = new();
+        List<MapPiece> pieces = new();
 
         if (piece.x != 0 && map.mapList[index - 1].value != ItemType.W)
             pieces.Add(map.mapList[index - 1]);
