@@ -2167,7 +2167,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5795560628c044e0c8866f97d4b37e55, type: 2}
   - {fileID: 11400000, guid: b67c2527c7a4548f0a6121214d9856df, type: 2}
   canvas: {fileID: 296683213}
-  cam: {fileID: 330585545}
 --- !u!4 &2011994988
 Transform:
   m_ObjectHideFlags: 0

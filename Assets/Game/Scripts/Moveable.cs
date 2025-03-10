@@ -239,5 +239,44 @@ public class Moveable : MonoBehaviour
             item.transform.DOScale(0, 0.2f).OnComplete(() => item.gameObject.SetActive(false));
         }
     }
-
+    public void RotateAway(MapPiece targetPiece)
+    {
+        Debug.Log(targetPiece.x + "  " + piece.x);
+        if (targetPiece.x > piece.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+        }
+        else if (targetPiece.x < piece.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (targetPiece.y > piece.y)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+        else if (targetPiece.y < piece.y)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+    public void RotateTowards(MapPiece targetPiece)
+    {
+        Debug.Log(targetPiece.x + "  " + piece.x);
+        if (targetPiece.x > piece.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (targetPiece.x < piece.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+        }
+        else if (targetPiece.y > piece.y)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else if (targetPiece.y < piece.y)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+    } 
 }

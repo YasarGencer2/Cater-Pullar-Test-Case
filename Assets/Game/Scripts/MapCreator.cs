@@ -129,9 +129,9 @@ public class MapCreator : MonoBehaviour
 
                 var body = obj.GetComponent<Body>();
                 body.CharacterType = charType;
-                CharacterList.Instance.AddBody(body);
                 bodies.Add(name);
                 body.SetPiece(nextPiece);
+                CharacterList.Instance.AddBody(body);
                 FindBodies(bodies, charType, type, nextPiece, mat);
             }
         }

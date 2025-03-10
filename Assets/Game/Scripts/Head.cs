@@ -14,6 +14,10 @@ public class Head : Moveable
     public void AddBody(Body body)
     {
         bodies.Add(body);
+        if (bodies.Count == 1)
+        {
+            RotateAway(bodies[0].piece);
+        }
     }
 
     public void AddTail(GameObject tail)
@@ -34,6 +38,7 @@ public class Head : Moveable
         this.tail.Portal = Portal;
 
         SetTail(this.tail);
+        this.tail.RotateAway(bodies[bodies.Count - 1].piece);
 
         Destroy(lastBody.gameObject);
     }
